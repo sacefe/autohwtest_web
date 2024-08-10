@@ -1,0 +1,20 @@
+<!-- hardware_test/templates/hardware_test/test_result_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Part Numbers</title>
+</head>
+<body>
+    <h1>Part Numbers</h1>
+</body>
+    <ul>
+    {% for partnumber in partnumbers %}
+            <li>{{ partnumber.partnumber }}</li>
+    {% empty %}
+        <li>No Part Numbers in Database yet.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
