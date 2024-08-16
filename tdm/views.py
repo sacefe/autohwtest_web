@@ -24,28 +24,6 @@ from tdm.serializers import (PartNumberSerializer, StationsSerializer,
                              FlowHistorySerializer )
 
 
-# Create your views here.
-
-# Example: Dummy part numer for demonstration TODO Delete 
-pn = 'halcon-00'
-qty = 3
-def run_create_partnumbers(request):
-    # Save part number to database
-    for i in range(qty):
-        partnumbers = PartNumber(partnumber=pn+str(i), 
-                                 description="description " + pn + str(i), 
-                                 date_created=timezone.now() )
-        partnumbers.save()
-    return render(request, 'create_part_numbers.html', {'partnumbers': partnumbers})
-
-# Get DB part numbers for - TODO moved to dashboard
-class PartNumberViewAll(ListView): # APIView):
-    model  = PartNumber #.objects.all()
-    template_name= 'view_part_number_all.html'
-    context_object_name = 'partnumbers'
-
-
-
 """
 CRUD List Template Operation with Django Rest Framework 
 """
@@ -628,3 +606,24 @@ class FlowHistoryDetailsCRUD(TdetailsCRUD):
 #         return Response({"Status": "sucess"}, 
 #                         status= status.HTTP_204_NO_CONTENT )
 
+#################################################################
+#     CREATE data in DB  directhly
+# Create your views here.
+
+# # Example: Dummy part numer for demonstration TODO Delete 
+# pn = 'halcon-00'
+# qty = 3
+# def run_create_partnumbers(request):
+#     # Save part number to database
+#     for i in range(qty):
+#         partnumbers = PartNumber(partnumber=pn+str(i), 
+#                                  description="description " + pn + str(i), 
+#                                  date_created=timezone.now() )
+#         partnumbers.save()
+#     return render(request, 'create_part_numbers.html', {'partnumbers': partnumbers})
+
+# # Get DB part numbers for - TODO moved to dashboard
+# class PartNumberViewAll(ListView): # APIView):
+#     model  = PartNumber #.objects.all()
+#     template_name= 'view_part_number_all.html'
+#     context_object_name = 'partnumbers'
