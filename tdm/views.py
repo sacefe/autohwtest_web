@@ -7,9 +7,21 @@ from rest_framework.views import APIView
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from tdm.models import (PartNumber, Stations, 
-                        TestMatrix, TestPlan)
+                        TestMatrix, TestPlan,
+                        StationSiblings, FlowProcessStep,
+                        SpecType, FlowTable,
+                        FlowMatrix, TestResultsOverAll,
+                        TestResultsProcess, TestCaseResults,
+                        TestResulstAchieve, FlowStatus,
+                        FlowHistory)
 from tdm.serializers import (PartNumberSerializer, StationsSerializer, 
-                             TestMatrixSerializer, TestPlanSerializer)
+                             TestMatrixSerializer, TestPlanSerializer,
+                             StationSiblingsSerializer, FlowProcessStepSerializer,
+                             SpecTypeSerializer, FlowTableSerializer,
+                             FlowMatrixSerializer, TestResultsOverAllSerializer,
+                             TestResultsProcessSerializer, TestCaseResultsSerializer,
+                             TestResulstAchieveSerializer, FlowStatusSerializer,
+                             FlowHistorySerializer )
 
 
 # Create your views here.
@@ -166,7 +178,7 @@ class TdetailsCRUD(APIView):
 
 
 """
-CRUD List PartNumbers Operation with Django Rest Framework 
+CRUD List/Details PartNumbers Operation with Django Rest Framework 
 """
 class PartNumberListCRUD(TlistCRUD):
     def __init__(self):
@@ -174,10 +186,7 @@ class PartNumberListCRUD(TlistCRUD):
             model_table=PartNumber,
             serializer_obj=PartNumberSerializer
         )
-            
-"""
-CRUD details PartNumber Operation with Django Rest Framework 
-"""
+
 class PartNumberDetailsCRUD(TdetailsCRUD):
     def __init__(self):
         super().__init__(
@@ -192,7 +201,7 @@ class PartNumberDetailsCRUD(TdetailsCRUD):
 
 
 """
-CRUD List Station Operation with Django Rest Framework 
+CRUD List/Details Station Operation with Django Rest Framework 
 """
 class StationsListCRUD(TlistCRUD):
     def __init__(self):
@@ -200,9 +209,7 @@ class StationsListCRUD(TlistCRUD):
             model_table=Stations,
             serializer_obj=StationsSerializer
         )   
-"""
-CRUD details Station Operation with Django Rest Framework 
-"""
+
 class StationsDetailsCRUD(TdetailsCRUD):
     def __init__(self):
         super().__init__(
@@ -217,7 +224,30 @@ class StationsDetailsCRUD(TdetailsCRUD):
 
 
 """
-CRUD List TestMatrix Operation with Django Rest Framework 
+CRUD List/Details Station Operation with Django Rest Framework 
+"""
+class StationSiblingsListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=StationSiblings,
+            serializer_obj=StationSiblingsSerializer
+        )   
+
+class StationSiblingsDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=StationSiblings,
+            serializer_obj=StationSiblingsSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return StationSiblings.objects.get(id=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+"""
+CRUD List/Details TestMatrix Operation with Django Rest Framework 
 """
 class TestMatrixListCRUD(TlistCRUD):
     def __init__(self):
@@ -225,9 +255,7 @@ class TestMatrixListCRUD(TlistCRUD):
             model_table=TestMatrix,
             serializer_obj=TestMatrixSerializer
         )          
-"""
-CRUD details TestMatrix Operation with Django Rest Framework 
-"""
+
 class TestMatrixDetailsCRUD(TdetailsCRUD):
     def __init__(self):
         super().__init__(
@@ -236,13 +264,15 @@ class TestMatrixDetailsCRUD(TdetailsCRUD):
         )
     def get_object(self, item):
         try:
-            return TestMatrix.objects.get(partnumber_id=item)
+            item_arr = item.split(",")
+            return TestMatrix.objects.get(partnumber_fk=item_arr[0],
+                                          sibling_lname_fk=item_arr[1])
         except self.model_obj.DoesNotExist:
             raise Http404
 
 
 """
-CRUD List TestPlan Operation with Django Rest Framework 
+CRUD List/Details TestPlan Operation with Django Rest Framework 
 """
 class TestPlanListCRUD(TlistCRUD):
     def __init__(self):
@@ -250,9 +280,7 @@ class TestPlanListCRUD(TlistCRUD):
             model_table=TestPlan,
             serializer_obj=TestPlanSerializer
         )
-"""
-CRUD details TestPlan Operation with Django Rest Framework 
-"""
+
 class TestPlanDetailsCRUD(TdetailsCRUD):
     def __init__(self):
         super().__init__(
@@ -264,6 +292,241 @@ class TestPlanDetailsCRUD(TdetailsCRUD):
             return TestPlan.objects.get(testplan_name=item)
         except self.model_obj.DoesNotExist:
             raise Http404
+
+
+"""
+CRUD List/Details TestPlan Operation with Django Rest Framework 
+"""
+class SpecTypeListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=SpecType,
+            serializer_obj=SpecTypeSerializer
+        )
+
+class SpecTypeDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=SpecType,
+            serializer_obj=SpecTypeSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return SpecType.objects.get(id=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+"""
+CRUD List/Details FlowProcessStep Operation with Django Rest Framework 
+"""
+class FlowProcessStepListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=FlowProcessStep,
+            serializer_obj=FlowProcessStepSerializer
+        )
+
+class FlowProcessStepDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=FlowProcessStep,
+            serializer_obj=FlowProcessStepSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return FlowProcessStep.objects.get(id=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+
+"""
+CRUD List/Details FlowTable Operation with Django Rest Framework 
+"""
+class FlowTableListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=FlowTable,
+            serializer_obj=FlowTableSerializer
+        )
+
+class FlowTableDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=FlowTable,
+            serializer_obj=FlowTableSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return FlowTable.objects.get(flow_name=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+"""
+CRUD List/Details FlowMatrix Operation with Django Rest Framework 
+"""
+class FlowMatrixListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=FlowMatrix,
+            serializer_obj=FlowMatrixSerializer
+        )
+                        
+class FlowMatrixDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=FlowMatrix,
+            serializer_obj=FlowMatrixSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return FlowMatrix.objects.get(partnumber_id=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+# NOT TESTED ====>
+"""
+CRUD List/Details TestResultsOverAll Operation with Django Rest Framework 
+"""
+class TestResultsOverAllListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=TestResultsOverAll,
+            serializer_obj=TestResultsOverAllSerializer
+        )
+            
+class TestResultsOverAllDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=TestResultsOverAll,
+            serializer_obj=TestResultsOverAllSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return TestResultsOverAll.objects.get(serialnumber=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+
+
+"""
+CRUD List/Details TestResultsProcess Operation with Django Rest Framework 
+"""
+class TestResultsProcessListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=TestResultsProcess,
+            serializer_obj=TestResultsProcessSerializer
+        )
+            
+class TestResultsProcessDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=TestResultsProcess,
+            serializer_obj=TestResultsProcessSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return TestResultsProcess.objects.get(overall_TR_fk=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+"""
+CRUD List/Details TestCaseResults Operation with Django Rest Framework 
+"""
+class TestCaseResultsListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=TestCaseResults,
+            serializer_obj=TestCaseResultsSerializer
+        )
+            
+class TestCaseResultsDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=TestCaseResults,
+            serializer_obj=TestCaseResultsSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return TestCaseResults.objects.get(process_TR_fk=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+"""
+CRUD List/Details TestResulstAchieve Operation with Django Rest Framework 
+"""
+class TestResulstAchieveListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=TestResulstAchieve,
+            serializer_obj=TestResulstAchieveSerializer
+        )
+            
+class TTestResulstAchieveDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=TestResulstAchieve,
+            serializer_obj=TestResulstAchieveSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return TestResulstAchieve.objects.get(serialnumber=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+                
+
+"""
+CRUD List/Details FlowStatus Operation with Django Rest Framework 
+"""
+class FlowStatusListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=FlowStatus,
+            serializer_obj=FlowStatusSerializer
+        )
+            
+class FlowStatusDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=FlowStatus,
+            serializer_obj=FlowStatusSerializer,
+        )
+    def get_object(self, item):
+        try:
+            return FlowStatus.objects.get(serialnumber=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+
+
+"""
+CRUD List/Details FlowHistory Operation with Django Rest Framework 
+"""
+class FlowHistoryListCRUD(TlistCRUD):
+    def __init__(self):
+            super().__init__(
+            model_table=FlowHistory,
+            serializer_obj=FlowHistorySerializer
+        )
+            
+class FlowHistoryDetailsCRUD(TdetailsCRUD):
+    def __init__(self):
+        super().__init__(
+            model_obj=FlowHistory,
+            serializer_obj=FlowHistorySerializer,
+        )
+    def get_object(self, item):
+        try:
+            return FlowHistory.objects.get(serialnumber=item)
+        except self.model_obj.DoesNotExist:
+            raise Http404
+                                   
 
 
 ################# ORIGINAL ##########################
