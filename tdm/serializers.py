@@ -10,16 +10,27 @@ from tdm.models import (PartNumber, Stations,
                         )
 
 """
+User serializer
+"""
+class AuthUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PartNumber
+        # fields = ('__all__')  
+        fields = ('username',
+                  'password')
+
+"""
 Partnumber/Stations serializer
 """
 class PartNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartNumber
         # fields = ('__all__')  
-        fields = ('id',
+        fields = (#'id',
                   'partnumber',
-                  'description',
-                  'date_created') 
+                  #'description',
+                  #'date_created'
+                  ) 
 
 
 class StationsSerializer(serializers.ModelSerializer):

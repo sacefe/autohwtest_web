@@ -5,6 +5,7 @@ urlpatterns = [
     # path('run_create_partnumbers/', views.run_create_partnumbers , name= 'run_create_partnumbers'),
     # path('view_part_numbers_all/', views.PartNumberViewAll.as_view(), name='view_part_numbers_all' ),
     # API's  class-based
+ #   path('user/', views.UserDetailsREAD.as_view()),
     path('partnumbers/', views.PartNumberListCRUD.as_view()),
     path('partnumbers/<str:item>/', views.PartNumberDetailsCRUD.as_view()),
     path('stationsiblings/', views.StationSiblingsListCRUD.as_view()),

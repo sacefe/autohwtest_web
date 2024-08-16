@@ -28,9 +28,10 @@ from tdm.serializers import (PartNumberSerializer, StationsSerializer,
 CRUD List Template Operation with Django Rest Framework 
 """
 class TlistCRUD(APIView):
-    def __init__(self, model_table:object, serializer_obj:object):
+    def __init__(self, model_table:object, serializer_obj:object, order_by):
         self.model_table = model_table
         self.serializer_obj = serializer_obj
+        self.order_by = order_by
 
     """
     GET   (QUERY All records)
@@ -39,7 +40,7 @@ class TlistCRUD(APIView):
     def get(self, request, format=None): 
         try:
             # checking for the parameters from the URL
-            items= self.model_table.objects.all()
+            items= self.model_table.objects.all().order_by(self.order_by)
             # if there is something in items else raise error
             if items:
                     serializers =  self.serializer_obj(items, many=True)
@@ -162,7 +163,8 @@ class PartNumberListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=PartNumber,
-            serializer_obj=PartNumberSerializer
+            serializer_obj=PartNumberSerializer,
+            order_by='partnumber'
         )
 
 class PartNumberDetailsCRUD(TdetailsCRUD):
@@ -185,7 +187,8 @@ class StationsListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=Stations,
-            serializer_obj=StationsSerializer
+            serializer_obj=StationsSerializer,
+            order_by='station_name'
         )   
 
 class StationsDetailsCRUD(TdetailsCRUD):
@@ -208,7 +211,8 @@ class StationSiblingsListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=StationSiblings,
-            serializer_obj=StationSiblingsSerializer
+            serializer_obj=StationSiblingsSerializer,
+            order_by='id'            
         )   
 
 class StationSiblingsDetailsCRUD(TdetailsCRUD):
@@ -216,6 +220,7 @@ class StationSiblingsDetailsCRUD(TdetailsCRUD):
         super().__init__(
             model_obj=StationSiblings,
             serializer_obj=StationSiblingsSerializer,
+            order_by='id'
         )
     def get_object(self, item):
         try:
@@ -231,14 +236,15 @@ class TestMatrixListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=TestMatrix,
-            serializer_obj=TestMatrixSerializer
+            serializer_obj=TestMatrixSerializer,
+            order_by='partnumber_fk'
         )          
 
 class TestMatrixDetailsCRUD(TdetailsCRUD):
     def __init__(self):
         super().__init__(
             model_obj=TestMatrix,
-            serializer_obj=TestMatrixSerializer,
+            serializer_obj=TestMatrixSerializer
         )
     def get_object(self, item):
         try:
@@ -256,7 +262,8 @@ class TestPlanListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=TestPlan,
-            serializer_obj=TestPlanSerializer
+            serializer_obj=TestPlanSerializer,
+            order_by='testplan_name'
         )
 
 class TestPlanDetailsCRUD(TdetailsCRUD):
@@ -279,7 +286,8 @@ class SpecTypeListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=SpecType,
-            serializer_obj=SpecTypeSerializer
+            serializer_obj=SpecTypeSerializer,
+            order_by='id'
         )
 
 class SpecTypeDetailsCRUD(TdetailsCRUD):
@@ -302,7 +310,8 @@ class FlowProcessStepListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=FlowProcessStep,
-            serializer_obj=FlowProcessStepSerializer
+            serializer_obj=FlowProcessStepSerializer,
+            order_by='id'
         )
 
 class FlowProcessStepDetailsCRUD(TdetailsCRUD):
@@ -326,7 +335,8 @@ class FlowTableListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=FlowTable,
-            serializer_obj=FlowTableSerializer
+            serializer_obj=FlowTableSerializer,
+            order_by='flow_name'
         )
 
 class FlowTableDetailsCRUD(TdetailsCRUD):
@@ -349,7 +359,8 @@ class FlowMatrixListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=FlowMatrix,
-            serializer_obj=FlowMatrixSerializer
+            serializer_obj=FlowMatrixSerializer,
+            order_by='partnumber_id'
         )
                         
 class FlowMatrixDetailsCRUD(TdetailsCRUD):
@@ -373,7 +384,8 @@ class TestResultsOverAllListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=TestResultsOverAll,
-            serializer_obj=TestResultsOverAllSerializer
+            serializer_obj=TestResultsOverAllSerializer,
+            order_by='serialnumber'
         )
             
 class TestResultsOverAllDetailsCRUD(TdetailsCRUD):
@@ -398,7 +410,8 @@ class TestResultsProcessListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=TestResultsProcess,
-            serializer_obj=TestResultsProcessSerializer
+            serializer_obj=TestResultsProcessSerializer,
+            order_by='overall_TR_fk'
         )
             
 class TestResultsProcessDetailsCRUD(TdetailsCRUD):
@@ -421,7 +434,8 @@ class TestCaseResultsListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=TestCaseResults,
-            serializer_obj=TestCaseResultsSerializer
+            serializer_obj=TestCaseResultsSerializer,
+            order_by='process_TR_fk'
         )
             
 class TestCaseResultsDetailsCRUD(TdetailsCRUD):
@@ -444,7 +458,8 @@ class TestResulstAchieveListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=TestResulstAchieve,
-            serializer_obj=TestResulstAchieveSerializer
+            serializer_obj=TestResulstAchieveSerializer,
+            order_by='serialnumber'
         )
             
 class TTestResulstAchieveDetailsCRUD(TdetailsCRUD):
@@ -467,7 +482,8 @@ class FlowStatusListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=FlowStatus,
-            serializer_obj=FlowStatusSerializer
+            serializer_obj=FlowStatusSerializer,
+            order_by='serialnumber'
         )
             
 class FlowStatusDetailsCRUD(TdetailsCRUD):
@@ -490,7 +506,8 @@ class FlowHistoryListCRUD(TlistCRUD):
     def __init__(self):
             super().__init__(
             model_table=FlowHistory,
-            serializer_obj=FlowHistorySerializer
+            serializer_obj=FlowHistorySerializer,
+            order_by='serialnumber'
         )
             
 class FlowHistoryDetailsCRUD(TdetailsCRUD):
