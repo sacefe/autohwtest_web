@@ -2,8 +2,8 @@ from django.urls import path
 from tdm import views
 
 urlpatterns = [
-    path('run_create_partnumbers/', views.run_create_partnumbers , name= 'run_create_partnumbers'),
-    path('view_part_numbers_all/', views.PartNumberViewAll.as_view(), name='view_part_numbers_all' ),
+    # path('run_create_partnumbers/', views.run_create_partnumbers , name= 'run_create_partnumbers'),
+    # path('view_part_numbers_all/', views.PartNumberViewAll.as_view(), name='view_part_numbers_all' ),
     # API's  class-based
     path('partnumbers/', views.PartNumberListCRUD.as_view()),
     path('partnumbers/<str:item>/', views.PartNumberDetailsCRUD.as_view()),
