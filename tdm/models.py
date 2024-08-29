@@ -67,7 +67,7 @@ class TestMatrix(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, help_text="ID for test matrix")
     partnumber_fk = models.ForeignKey("PartNumber", on_delete= models.CASCADE)
     sibling_lname_fk = models.ForeignKey("StationSiblings", on_delete= models.DO_NOTHING)
-    testplan_name = models.CharField(max_length=20, blank=False)
+    py = models.CharField(max_length=20, blank=False)
     employee_id = models.IntegerField(blank=False)
     date_created = models.DateTimeField(blank=True)
     date_updated = models.DateTimeField(auto_now=True)

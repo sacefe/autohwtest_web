@@ -3,3 +3,4 @@ psycopg2-binary==2.9.9      # required for pstgreSQL
 djangorestframework==3.15.2 # Django REST framework is a powerful and flexible toolkit for building Web APIs.
 markdown==3.6               # Markdown support for the browsable API.                  
 django-filter==24.3         # Filtering support
+pymongo==4.8.0

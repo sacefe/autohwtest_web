@@ -26,10 +26,10 @@ class PartNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartNumber
         # fields = ('__all__')  
-        fields = (#'id',
+        fields = ('id',
                   'partnumber',
-                  #'description',
-                  #'date_created'
+                  'description',
+                  'date_created'
                   ) 
 
 
